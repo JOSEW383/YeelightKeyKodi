@@ -124,7 +124,7 @@ def scene1():
         set_rgb(bulb3, colors[(i+2)%6])
         set_rgb(bulb4, colors[(i+3)%6])
         sleep(1)
-    for i in range(3):
+    for i in range(4):
         set_rgb(bulbs[i],white)
 
 def change_bright():
