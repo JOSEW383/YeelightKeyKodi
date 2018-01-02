@@ -1,0 +1,16 @@
+<keymap>
+  <global>
+    <keyboard>
+	  <zero>RunScript(script.YeelightKey, 0)</zero>
+	  <one>RunScript(script.YeelightKey, 1)</one>
+	  <two>RunScript(script.YeelightKey, 2)</two>
+	  <three>RunScript(script.YeelightKey, 3)</three>
+	  <four>RunScript(script.YeelightKey, 4)</four>
+	  <five>RunScript(script.YeelightKey, 5)</five>
+	  <six>RunScript(script.YeelightKey, 6)</six>
+	  <seven>RunScript(script.YeelightKey, 7)</seven>
+	  <eight>RunScript(script.YeelightKey, 8)</eight>
+	  <nine>RunScript(script.YeelightKey, 9)</nine>
+    </keyboard>
+  </global>
+</keymap>

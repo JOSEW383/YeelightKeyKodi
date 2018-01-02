@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.YeelightKey"
+       name="YeelightKey"
+       version="1.0.0"
+       provider-name="YeelightKey">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0"/>
+  </requires>
+  <extension point="xbmc.python.script" library="default.py" />
+  <extension point="xbmc.addon.metadata">
+	<platform>all</platform>
+	<summary lang="en">Take control of your light bulb</summary>
+	<description lang="en">You can edit the python file (servide.py) to configure the lights bulb</description>
+  </extension>
+</addon>
