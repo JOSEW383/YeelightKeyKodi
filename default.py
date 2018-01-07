@@ -190,6 +190,7 @@ def default_scene():
 #-------------------------------------------------------------------------
 #MAIN OF YEELIGHTPRO
 #List of conditions: http://kodi.wiki/view/List_of_boolean_conditions
+#xbmc.executebuiltin('Action(reloadkeymaps)') #To reload keymaps (or set <r>reloadkeymaps</r> in keymaps.xml)
 x = sys.argv[1]
 if x == '0':
     turn_off_all()
@@ -211,5 +212,15 @@ elif x == '8':
     default_scene()
 elif x == '9':
     scene1()
+elif x == 'pageup':
+    if xbmc.getCondVisibility("Window.IsActive(pictures)"):
+        xbmc.executebuiltin("Action(ZoomIn)")
+    else:
+        xbmc.executebuiltin("Action(PageUp)")
+elif x == 'pagedown':
+    if xbmc.getCondVisibility("Window.IsActive(pictures)"):
+        xbmc.executebuiltin("Action(ZoomOut)")
+    else:
+        xbmc.executebuiltin("Action(PageDown)")
 else:
     xbmc.executebuiltin("Notification(YeelightKey,Scene not found: "+x+")")

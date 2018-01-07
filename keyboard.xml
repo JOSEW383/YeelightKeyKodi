@@ -11,6 +11,10 @@
 	  <seven>RunScript(script.YeelightKey, 7)</seven>
 	  <eight>RunScript(script.YeelightKey, 8)</eight>
 	  <nine>RunScript(script.YeelightKey, 9)</nine>
+	  <key id="61654">contextmenu</key>
+	  <r>reloadkeymaps</r>
+	  <pageup>RunScript(script.YeelightKey, pageup)</pageup>
+	  <pagedown>RunScript(script.YeelightKey, pagedown)</pagedown>
     </keyboard>
   </global>
 </keymap>
