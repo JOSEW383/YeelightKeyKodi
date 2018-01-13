@@ -99,21 +99,6 @@ def turn_off(ip):
     operate_on_bulb(ip,"set_power",params)
 
 #-------------------------------------------------------------------------
-#Voids witch all light bulbs
-
-def turn_on_all():
-    turn_on(bulb1)
-    turn_on(bulb2)
-    turn_on(bulb3)
-    turn_on(bulb4)
-
-def turn_off_all():
-    turn_off(bulb1)
-    turn_off(bulb2)
-    turn_off(bulb3)
-    turn_off(bulb4)
-
-#-------------------------------------------------------------------------
 #Other Methods
 
 def change_state():
@@ -197,6 +182,21 @@ def number_bulbs():
         return 4
 
 #-------------------------------------------------------------------------
+#Voids witch all light bulbs
+
+def turn_on_all():
+    turn_on(bulb1)
+    turn_on(bulb2)
+    turn_on(bulb3)
+    turn_on(bulb4)
+
+def turn_off_all():
+    turn_off(bulb1)
+    turn_off(bulb2)
+    turn_off(bulb3)
+    turn_off(bulb4)
+
+#-------------------------------------------------------------------------
 #Scenes
 
 def scene1():
@@ -219,8 +219,8 @@ def scene1():
         set_rgb(bulbs[i],white)
 
 def default_scene():
-    info = get_info(bulb4,"power")
-    if info == "empty":
+    nbulbs = number_bulbs()
+    if nbulbs == 3:
         turn_off_all()
         turn_on(bulb1)
         set_rgb(bulb1,white)
