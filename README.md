@@ -7,7 +7,7 @@ Installation:
 5) Drag script.YeelightKey to YeelightKeyKodi.zip
 6) Install YeelightKeyKodi in kodi
 
-7)Copy keyboard.xml in kodi patch -> \Userdata\keymaps
+7)Copy keyboard.xml and Mouse.xml in kodi patch -> \Userdata\keymaps
 
 ------------------------------------------
 To change the behavior of light bulbs, edit the default.py file

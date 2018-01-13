@@ -11,6 +11,7 @@ bulb1 = "192.168.5.110"
 bulb2 = "192.168.5.111"
 bulb3 = "192.168.5.112"
 bulb4 = "192.168.5.113"
+bulbs=[bulb1,bulb2,bulb3,bulb4]
 
 port=55443
 
@@ -23,6 +24,9 @@ pink=16711935
 yellow=16776960
 turquoise=65535
 film=9599999
+
+colors=[255,65280,16711680,16711935,16776960,65535]
+
 #-------------------------------------------------------------------------
 #Methods of yeelight
 
@@ -110,25 +114,37 @@ def turn_off_all():
     turn_off(bulb4)
 
 #-------------------------------------------------------------------------
-#Scenes
+#Other Methods
 
-def scene1():
-    turn_on_all()
-    colors=[255,65280,16711680,16711935,16776960,65535]
-    bulbs=[bulb1,bulb2,bulb3,bulb4]
-    for i in range(4):
-        set_bright(bulbs[i],100)
-    for i in range(5):
-        set_rgb(bulb1, colors[i%6])
-        set_rgb(bulb2, colors[(i+1)%6])
-        set_rgb(bulb3, colors[(i+2)%6])
-        set_rgb(bulb4, colors[(i+3)%6])
-        sleep(1)
-    for i in range(4):
-        set_rgb(bulbs[i],white)
+def change_state():
+    try:
+        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "r")
+    except Exception as e:
+        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w+")
+        data.write("notOpen")
+        data.close()
+    state = data.readline()
+    data.close()
+    if state == "isOpen":
+        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
+        data.write("notOpen")
+        data.close()
+    else:#isNotOpen
+        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
+        data.write("isOpen")
+        data.close()
+
+def is_open():
+    data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "r")
+    state = data.read()
+    data.close()
+    if state == "isOpen":
+        return True
+    else:#isNotOpen
+        data.close()
+        return False
 
 def change_bright():
-    bulbs=[bulb1,bulb2,bulb3,bulb4]
     info = get_info(bulb1,"bright")
     if info == "1":
         for i in range(4):
@@ -150,7 +166,6 @@ def change_bright():
             set_bright(bulbs[i],100)
 
 def change_color():
-    bulbs=[bulb1,bulb2,bulb3,bulb4]
     info = get_info(bulb1,"rgb")
     if info == "16777215":
         for i in range(4):
@@ -173,6 +188,35 @@ def change_color():
     else:
         for i in range(4):
             set_rgb(bulbs[i],16777215)
+
+def number_bulbs():
+    info = get_info(bulb4,"power")
+    if info == "empty":
+        return 3
+    else:
+        return 4
+
+#-------------------------------------------------------------------------
+#Scenes
+
+def scene1():
+    change_state()
+    turn_on_all()
+    nbulbs = number_bulbs()
+    for i in range(nbulbs):
+        set_bright(bulbs[i],100)
+    while not is_open():
+        for i in range(6):
+            set_rgb(bulb1, colors[i%6])
+            set_rgb(bulb2, colors[(i+1)%6])
+            set_rgb(bulb3, colors[(i+2)%6])
+            if nbulbs == 4:
+                set_rgb(bulb4, colors[(i+3)%6])
+            if is_open():
+                break
+            sleep(1)
+    for i in range(nbulbs):
+        set_rgb(bulbs[i],white)
 
 def default_scene():
     info = get_info(bulb4,"power")
