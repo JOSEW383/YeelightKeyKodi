@@ -15,6 +15,7 @@
 	  <r>reloadkeymaps</r>
 	  <pageup>RunScript(script.YeelightKey, pageup)</pageup>
 	  <pagedown>RunScript(script.YeelightKey, pagedown)</pagedown>
+	  <play_pause mod="longpress">stop</play_pause>
     </keyboard>
   </global>
 </keymap>
