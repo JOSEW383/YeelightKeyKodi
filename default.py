@@ -25,7 +25,7 @@ yellow=16776960
 turquoise=65535
 film=9599999
 
-colors=[255,65280,16711680,16711935,16776960,65535]
+colors=[blue,green,red,pink,yellow,turquoise]
 
 #-------------------------------------------------------------------------
 #Methods of yeelight
@@ -101,32 +101,51 @@ def turn_off(ip):
 #-------------------------------------------------------------------------
 #Other Methods
 
-def change_state():
+def change_state(mode):
+    state = []
     try:
         data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "r")
     except Exception as e:
         data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w+")
-        data.write("notOpen")
+        data.write("notOpen\n")
+        data.write("normal")
         data.close()
-    state = data.readline()
+    state.append(data.readline())
+    state.append(data.readline())
     data.close()
-    if state == "isOpen":
+
+    if mode == "data1":
+        thelist = [0,"isOpen\n","notOpen\n","isOpen\n","isOpen\n","isOpen\n"]
+    elif mode == "data2":
+        thelist = [1,"normal","isOpen\n","film","isOpen\n","normal"]
+
+    if state[thelist[0]] == thelist[1]:
         data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
-        data.write("notOpen")
+        data.write(thelist[2])
+        data.write(thelist[3])
         data.close()
-    else:#isNotOpen
+    else:
         data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
-        data.write("isOpen")
+        data.write(thelist[4])
+        data.write(thelist[5])
         data.close()
 
-def is_open():
+def read_data(mode):
+    state = []
     data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "r")
-    state = data.read()
+    state.append(data.readline())
+    state.append(data.readline())
     data.close()
-    if state == "isOpen":
+
+    #In thelist the var1 is the mode-1 and the var2 is the modes in file date
+    if mode == "data1":
+        thelist = [0,"isOpen\n"]
+    elif mode == "data2":
+        thelist = [1,"normal"]
+
+    if state[thelist[0]] == thelist[1]:
         return True
-    else:#isNotOpen
-        data.close()
+    else:
         return False
 
 def change_bright():
@@ -200,36 +219,45 @@ def turn_off_all():
 #Scenes
 
 def scene1():
-    change_state()
+    change_state("data1")
     turn_on_all()
     nbulbs = number_bulbs()
     for i in range(nbulbs):
         set_bright(bulbs[i],100)
-    while not is_open():
+    while not read_data("data1"):
         for i in range(6):
             set_rgb(bulb1, colors[i%6])
             set_rgb(bulb2, colors[(i+1)%6])
             set_rgb(bulb3, colors[(i+2)%6])
             if nbulbs == 4:
                 set_rgb(bulb4, colors[(i+3)%6])
-            if is_open():
+            if read_data("data1"):
                 break
             sleep(1)
     for i in range(nbulbs):
         set_rgb(bulbs[i],white)
 
 def default_scene():
+    change_state("data2")
     nbulbs = number_bulbs()
     if nbulbs == 3:
         turn_off_all()
         turn_on(bulb1)
-        set_rgb(bulb1,white)
-        set_bright(bulb1,50)
+        if read_data("data2"):
+            set_rgb(bulb1,white)
+            set_bright(bulb1,50)
+        else:
+            set_rgb(bulb3,film)
+            set_bright(bulb3,20)
     else:
         turn_off_all()
         turn_on(bulb4)
-        set_rgb(bulb4,white)
-        set_bright(bulb4,100)
+        if read_data("data2"):
+            set_rgb(bulb4,white)
+            set_bright(bulb4,100)
+        else:
+            set_rgb(bulb4,film)
+            set_bright(bulb4,50)
 
 #-------------------------------------------------------------------------
 #MAIN OF YEELIGHTPRO
