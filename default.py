@@ -115,7 +115,7 @@ def change_state(mode):
     data.close()
 
     if mode == "data1":
-        thelist = [0,"isOpen\n","notOpen\n","isOpen\n","isOpen\n","isOpen\n"]
+        thelist = [0,"isOpen\n","notOpen\n",state[1],"isOpen\n",state[1]]
     elif mode == "data2":
         thelist = [1,"normal","isOpen\n","film","isOpen\n","normal"]
 
