@@ -104,31 +104,37 @@ def turn_off(ip):
 def change_state(mode):
     state = []
     try:
-        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "r")
+        filee  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "r")
     except Exception as e:
-        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w+")
-        data.write("notOpen\n")
-        data.write("normal")
-        data.close()
-    state.append(data.readline())
-    state.append(data.readline())
-    data.close()
+        filee  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w+")
+        filee.write("notOpen\n")
+        filee.write("normal")
+        filee.close()
+    state.append(filee.readline())
+    state.append(filee.readline())
+    filee.close()
 
     if mode == "data1":
-        thelist = [0,"isOpen\n","notOpen\n",state[1],"isOpen\n",state[1]]
+        data = ["notOpen\n","isOpen\n"]
+        change_data(0,state,data)
     elif mode == "data2":
-        thelist = [1,"normal","isOpen\n","film","isOpen\n","normal"]
+        data = ["normal","film"]
+        change_data(1,state,data)
 
-    if state[thelist[0]] == thelist[1]:
-        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
-        data.write(thelist[2])
-        data.write(thelist[3])
-        data.close()
-    else:
-        data  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
-        data.write(thelist[4])
-        data.write(thelist[5])
-        data.close()
+#write
+def change_data(line,state,data):
+    filee  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
+    for i in range(len(state)):
+        if (i) != line:
+            filee.write(state[i])
+        else:
+            num=0
+            for j in range(len(data)):
+                if state[i] == data[j]:
+                    num=j
+                    break
+            filee.write(data[(num+1)%len(data)])
+    filee.close()
 
 def read_data(mode):
     state = []
@@ -137,16 +143,10 @@ def read_data(mode):
     state.append(data.readline())
     data.close()
 
-    #In thelist the var1 is the mode-1 and the var2 is the modes in file date
     if mode == "data1":
-        thelist = [0,"isOpen\n"]
+        return state[0]
     elif mode == "data2":
-        thelist = [1,"normal"]
-
-    if state[thelist[0]] == thelist[1]:
-        return True
-    else:
-        return False
+        return state[1]
 
 def change_bright():
     info = get_info(bulb1,"bright")
@@ -224,14 +224,14 @@ def scene1():
     nbulbs = number_bulbs()
     for i in range(nbulbs):
         set_bright(bulbs[i],100)
-    while not read_data("data1"):
+    while read_data("data1") == "notOpen\n":
         for i in range(6):
             set_rgb(bulb1, colors[i%6])
             set_rgb(bulb2, colors[(i+1)%6])
             set_rgb(bulb3, colors[(i+2)%6])
             if nbulbs == 4:
                 set_rgb(bulb4, colors[(i+3)%6])
-            if read_data("data1"):
+            if read_data("data1") == "isOpen\n":
                 break
             sleep(1)
     for i in range(nbulbs):
@@ -243,7 +243,7 @@ def default_scene():
     if nbulbs == 3:
         turn_off_all()
         turn_on(bulb1)
-        if read_data("data2"):
+        if read_data("data2") == "normal":
             set_rgb(bulb1,white)
             set_bright(bulb1,50)
         else:
@@ -252,7 +252,10 @@ def default_scene():
     else:
         turn_off_all()
         turn_on(bulb4)
-        if read_data("data2"):
+        if read_data("data2") == "normal":
+            turn_on(bulb1)
+            set_rgb(bulb1,1315890)
+            set_bright(bulb1,50)
             set_rgb(bulb4,white)
             set_bright(bulb4,100)
         else:
