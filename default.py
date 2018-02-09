@@ -46,7 +46,7 @@ def get_param_value(data, info):
 def get_info(ip,info):
     try:
         tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        tcp_socket.settimeout(2)
+        tcp_socket.settimeout(0.15)
         tcp_socket.connect((ip, int(port)))
         tcp_socket.send("{\"id\":" + ip + ", \"method\":\"get_prop\", \"params\":[\"power\", \"bright\", \"rgb\"]}\r\n")
         data = tcp_socket.recvfrom(2048)
@@ -58,7 +58,7 @@ def get_info(ip,info):
 def operate_on_bulb(ip, method, params):
 	try:
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		tcp_socket.settimeout(2)
+		tcp_socket.settimeout(0.15)
 		print "Send to ",ip, port ,"..."
 		tcp_socket.connect((ip, int(port)))
 
@@ -121,7 +121,6 @@ def change_state(mode):
         data = ["normal","film"]
         change_data(1,state,data)
 
-#write
 def change_data(line,state,data):
     filee  = open("/storage/.kodi/addons/script.YeelightKey/data.txt", "w")
     for i in range(len(state)):
@@ -242,11 +241,12 @@ def default_scene():
     nbulbs = number_bulbs()
     if nbulbs == 3:
         turn_off_all()
-        turn_on(bulb1)
         if read_data("data2") == "normal":
+            turn_on(bulb1)
             set_rgb(bulb1,white)
             set_bright(bulb1,50)
         else:
+            turn_on(bulb3)
             set_rgb(bulb3,film)
             set_bright(bulb3,20)
     else:
