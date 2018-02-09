@@ -6,7 +6,7 @@
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
   </requires>
-  <extension point="xbmc.python.script" library="default.py" />
+  <extension point="xbmc.python.script" library="YeelightKey.py" />
   <extension point="xbmc.addon.metadata">
 	<platform>all</platform>
 	<summary lang="en">Take control of your light bulb</summary>
