@@ -208,6 +208,12 @@ def turn_on_all():
     turn_on(bulb3)
     turn_on(bulb4)
 
+def turn_on_all2():
+    for i in range(4):
+        turn_on(bulbs[i])
+        set_rgb(bulbs[i],white)
+        set_bright(bulbs[i],100)
+
 def turn_off_all():
     turn_off(bulb1)
     turn_off(bulb2)
@@ -279,6 +285,8 @@ elif x == '4':
 	toggle(bulb4)
 elif x == '5':
     turn_on_all()
+elif x == '55':
+    turn_on_all2()
 elif x == '6':
     change_bright()
 elif x == '7':

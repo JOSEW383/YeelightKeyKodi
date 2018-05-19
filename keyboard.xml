@@ -7,6 +7,7 @@
 	  <three>RunScript(script.YeelightKey, 3)</three>
 	  <four>RunScript(script.YeelightKey, 4)</four>
 	  <five>RunScript(script.YeelightKey, 5)</five>
+	  <five mod="longpress">RunScript(script.YeelightKey, 55)</five>
 	  <six>RunScript(script.YeelightKey, 6)</six>
 	  <seven>RunScript(script.YeelightKey, 7)</seven>
 	  <eight>RunScript(script.YeelightKey, 8)</eight>
