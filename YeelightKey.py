@@ -72,6 +72,11 @@ def operate_on_bulb(ip, method, params):
 	except Exception as e:
 		print "An error has ocurred:", e
 
+def set_ct_abx(ip,temperature):
+    #Temperature between 1700-6500
+    params= ",\"smooth\",500"
+    operate_on_bulb(ip, "set_ct_abx", temperature+params)
+
 def set_rgb(ip, color):
     #white 16777215 blue 255 green 65280 red 16711680 pink 16711935 yellow 16776960 turquoise 65535
     params=",\"smooth\",500"
@@ -170,7 +175,7 @@ def change_bright():
 
 def change_color():
     info = get_info(bulb1,"rgb")
-    if info == "16777215":
+    if info == "65535":
         for i in range(4):
             set_rgb(bulbs[i],255)
     elif info == "255":
@@ -185,12 +190,9 @@ def change_color():
     elif info == "16711935":
         for i in range(4):
             set_rgb(bulbs[i],16776960)
-    elif info == "16776960":
-        for i in range(4):
-            set_rgb(bulbs[i],65535)
     else:
         for i in range(4):
-            set_rgb(bulbs[i],16777215)
+            set_rgb(bulbs[i],65535)
 
 def number_bulbs():
     info = get_info(bulb4,"power")
@@ -198,6 +200,9 @@ def number_bulbs():
         return 3
     else:
         return 4
+
+def white_set(ip):
+    set_ct_abx(ip,"6000")
 
 #-------------------------------------------------------------------------
 #Voids witch all light bulbs
@@ -211,7 +216,7 @@ def turn_on_all():
 def turn_on_all2():
     for i in range(4):
         turn_on(bulbs[i])
-        set_rgb(bulbs[i],white)
+        white_set(bulbs[i])
         set_bright(bulbs[i],100)
 
 def turn_off_all():
@@ -240,7 +245,7 @@ def scene1():
                 break
             sleep(1)
     for i in range(nbulbs):
-        set_rgb(bulbs[i],white)
+        white_set(bulbs[i])
 
 def default_scene():
     change_state("data2")
@@ -249,7 +254,7 @@ def default_scene():
         turn_off_all()
         if read_data("data2") == "normal":
             turn_on(bulb1)
-            set_rgb(bulb1,white)
+            white_set(bulb1)
             set_bright(bulb1,50)
         else:
             turn_on(bulb3)
@@ -262,7 +267,7 @@ def default_scene():
             turn_on(bulb1)
             set_rgb(bulb1,1315890)
             set_bright(bulb1,50)
-            set_rgb(bulb4,white)
+            white_set(bulb4)
             set_bright(bulb4,100)
         else:
             set_rgb(bulb4,film)
