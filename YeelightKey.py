@@ -27,6 +27,12 @@ film=9599999
 
 colors=[blue,green,red,pink,yellow,turquoise]
 
+#List of temperatures (Min 1700, Max 6500)
+tYellow=1700
+tWhiteLow=6000
+tWhite=6500
+temperature=[tYellow,tWhiteLow,tWhite]
+
 #-------------------------------------------------------------------------
 #Methods of yeelight
 
@@ -75,7 +81,7 @@ def operate_on_bulb(ip, method, params):
 def set_ct_abx(ip,temperature):
     #Temperature between 1700-6500
     params= ",\"smooth\",500"
-    operate_on_bulb(ip, "set_ct_abx", temperature+params)
+    operate_on_bulb(ip, "set_ct_abx", str(temperature)+params)
 
 def set_rgb(ip, color):
     #white 16777215 blue 255 green 65280 red 16711680 pink 16711935 yellow 16776960 turquoise 65535
@@ -202,7 +208,7 @@ def number_bulbs():
         return 4
 
 def white_set(ip):
-    set_ct_abx(ip,"6000")
+    set_ct_abx(ip,tWhiteLow)
 
 #-------------------------------------------------------------------------
 #Voids witch all light bulbs
