@@ -3,8 +3,10 @@ import socket
 from time import sleep
 from time import strftime
 from ast import literal_eval
-import xbmc
 import sys
+import json
+import xbmc
+import os
 #-------------------------------------------------------------------------
 #List of light bulbs
 bulb1 = "192.168.5.110"
@@ -37,7 +39,7 @@ temperature=[tYellow,tWhiteLow,tWhite]
 #Methods of yeelight
 
 def get_param_value(data, info):
-    dictionary = literal_eval(data[0])
+    dictionary = json.loads(data[0])
     value = dictionary["result"]
     if info == "power":
         return value[0]
@@ -54,7 +56,8 @@ def get_info(ip,info):
         tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         tcp_socket.settimeout(0.15)
         tcp_socket.connect((ip, int(port)))
-        tcp_socket.send("{\"id\":" + ip + ", \"method\":\"get_prop\", \"params\":[\"power\", \"bright\", \"rgb\"]}\r\n")
+        msg = "{\"id\":" + ip + ", \"method\":\"get_prop\", \"params\":[\"power\", \"bright\", \"rgb\"]}\r\n"
+        tcp_socket.send(msg.encode())
         data = tcp_socket.recvfrom(2048)
         tcp_socket.close()
         return get_param_value(data,info)
@@ -65,7 +68,7 @@ def operate_on_bulb(ip, method, params):
 	try:
 		tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		tcp_socket.settimeout(0.15)
-		print "Send to ",ip, port ,"..."
+		print("Send to ",ip, port ,"...")
 		tcp_socket.connect((ip, int(port)))
 
 		#msg2="{\"id\": 192.168.4.234, \"method\": \"set_rgb\", \"params\":[\"65280\", \"sudden\", 500]}\r\n"
@@ -73,10 +76,10 @@ def operate_on_bulb(ip, method, params):
 		msg="{\"id\":" + str(ip) + ",\"method\":\""
 		msg += method + "\",\"params\":[" + params + "]}\r\n"
 
-		tcp_socket.send(msg)
+		tcp_socket.send(msg.encode())
 		tcp_socket.close()
 	except Exception as e:
-		print "An error has ocurred:", e
+		print("An error has ocurred:", e)
 
 def set_ct_abx(ip,temperature):
     #Temperature between 1700-6500
@@ -279,42 +282,47 @@ def default_scene():
             set_rgb(bulb4,film)
             set_bright(bulb4,50)
 
+
+def executeKey(key):
+    #List of conditions: http://kodi.wiki/view/List_of_boolean_conditions
+    #xbmc.executebuiltin('Action(reloadkeymaps)') #To reload keymaps (or set <r>reloadkeymaps</r> in keymaps.xml)
+    if key == '0':
+        turn_off_all()
+    elif key == '1':
+        toggle(bulb1)
+    elif key == '2':
+        toggle(bulb2)
+    elif key == '3':
+        toggle(bulb3)
+    elif key == '4':
+        toggle(bulb4)
+    elif key == '5':
+        turn_on_all()
+    elif key == '55':
+        turn_on_all2()
+    elif key == '6':
+        change_bright()
+    elif key == '7':
+        change_color()
+    elif key == '8':
+        default_scene()
+    elif key == '9':
+        scene1()
+    elif key == 'pageup':
+        if xbmc.getCondVisibility("Window.IsActive(pictures)"):
+            xbmc.executebuiltin("Action(ZoomIn)")
+        else:
+            xbmc.executebuiltin("Action(PageUp)")
+    elif key == 'pagedown':
+        if xbmc.getCondVisibility("Window.IsActive(pictures)"):
+            xbmc.executebuiltin("Action(ZoomOut)")
+        else:
+            xbmc.executebuiltin("Action(PageDown)")
+    else:
+        xbmc.executebuiltin("Notification(YeelightKey,Scene not found: "+key+")")
+
+
 #-------------------------------------------------------------------------
-#MAIN OF YEELIGHTPRO
-#List of conditions: http://kodi.wiki/view/List_of_boolean_conditions
-#xbmc.executebuiltin('Action(reloadkeymaps)') #To reload keymaps (or set <r>reloadkeymaps</r> in keymaps.xml)
-x = sys.argv[1]
-if x == '0':
-    turn_off_all()
-elif x == '1':
-    toggle(bulb1)
-elif x == '2':
-	toggle(bulb2)
-elif x == '3':
-	toggle(bulb3)
-elif x == '4':
-	toggle(bulb4)
-elif x == '5':
-    turn_on_all()
-elif x == '55':
-    turn_on_all2()
-elif x == '6':
-    change_bright()
-elif x == '7':
-    change_color()
-elif x == '8':
-    default_scene()
-elif x == '9':
-    scene1()
-elif x == 'pageup':
-    if xbmc.getCondVisibility("Window.IsActive(pictures)"):
-        xbmc.executebuiltin("Action(ZoomIn)")
-    else:
-        xbmc.executebuiltin("Action(PageUp)")
-elif x == 'pagedown':
-    if xbmc.getCondVisibility("Window.IsActive(pictures)"):
-        xbmc.executebuiltin("Action(ZoomOut)")
-    else:
-        xbmc.executebuiltin("Action(PageDown)")
-else:
-    xbmc.executebuiltin("Notification(YeelightKey,Scene not found: "+x+")")
+#MAIN OF YEELIGHTKEY
+key = sys.argv[1]
+executeKey(key)
