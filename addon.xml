@@ -11,5 +11,9 @@
 	<platform>all</platform>
 	<summary lang="en">Take control of your light bulb</summary>
 	<description lang="en">You can edit the python file (servide.py) to configure the lights bulb</description>
+	<assets>
+		<icon>resources/icon.png</icon>
+		<fanart>resources/fanart.jpg</fanart>
+	</assets>
   </extension>
 </addon>
