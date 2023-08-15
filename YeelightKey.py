@@ -7,13 +7,15 @@ import sys
 import json
 import xbmc
 import os
+from ewelinkpy.Conection import get_authorization_code, get_access_token
+from ewelinkpy.Device import  get_device_status, set_device_status
 #-------------------------------------------------------------------------
 #List of light bulbs
 bulb1 = "192.168.5.110"
 bulb2 = "192.168.5.111"
 bulb3 = "192.168.5.112"
 bulb4 = "192.168.5.113"
-bulbs=[bulb1,bulb2,bulb3,bulb4]
+bulbs = [bulb1,bulb2,bulb3,bulb4]
 
 port=55443
 
@@ -34,6 +36,11 @@ tYellow=1700
 tWhiteLow=6000
 tWhite=6500
 temperature=[tYellow,tWhiteLow,tWhite]
+
+#-------------------------------------------------------------------------
+#List of ewelink devices
+ewelink1 = "1001xxxxxx"
+ewelink2 = "1001xxxxxx"
 
 #-------------------------------------------------------------------------
 #Methods of yeelight
@@ -281,7 +288,21 @@ def default_scene():
         else:
             set_rgb(bulb4,film)
             set_bright(bulb4,50)
+#-------------------------------------------------------------------------
+#Ewelink Methods
 
+def toggle_ewelink(ewelink_id):
+    authorization_code = get_authorization_code()
+    token = get_access_token(authorization_code)
+    device_on = get_device_status(token, ewelink_id)
+
+    if device_on:
+        set_device_status(token, ewelink_id, False)
+    else:
+        set_device_status(token, ewelink_id, True)
+
+#-------------------------------------------------------------------------
+#Key Methods
 
 def executeKey(key):
     #List of conditions: http://kodi.wiki/view/List_of_boolean_conditions
@@ -290,8 +311,12 @@ def executeKey(key):
         turn_off_all()
     elif key == '1':
         toggle(bulb1)
+    elif key == '11':
+        toggle_ewelink(ewelink1)
     elif key == '2':
         toggle(bulb2)
+    elif key == '22':
+        toggle_ewelink(ewelink2)
     elif key == '3':
         toggle(bulb3)
     elif key == '4':

@@ -5,6 +5,7 @@
        provider-name="YeelightKey">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
+	<import addon="script.module.requests"/>
   </requires>
   <extension point="xbmc.python.script" library="YeelightKey.py" />
   <extension point="xbmc.addon.metadata">
