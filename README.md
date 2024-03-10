@@ -3,6 +3,8 @@
 ## Installation:
 
 1. Download files
+2. Add your yeelight bulb ip in YeelightKey.py
+3. (Optional) Add ewelink id in YeelightKey.py
 2. Create new folder and name it script.YeelightKey
 3. Drag all files to script.YeelightKey
 4. Create a new zip file and name it YeelightKeyKodi.zip
