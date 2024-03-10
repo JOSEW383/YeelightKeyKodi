@@ -3,7 +3,9 @@
     <keyboard>
 	  <zero>RunScript(script.YeelightKey, 0)</zero>
 	  <one>RunScript(script.YeelightKey, 1)</one>
+	  <one mod="longpress">RunScript(script.YeelightKey, 11)</one>
 	  <two>RunScript(script.YeelightKey, 2)</two>
+	  <two mod="longpress">RunScript(script.YeelightKey, 22)</two>
 	  <three>RunScript(script.YeelightKey, 3)</three>
 	  <four>RunScript(script.YeelightKey, 4)</four>
 	  <five>RunScript(script.YeelightKey, 5)</five>
